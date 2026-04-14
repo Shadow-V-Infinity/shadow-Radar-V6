@@ -60,7 +60,8 @@ def format_alert(alert):
             f"Match : {alert['match']}\n"
             f"Profit garanti : {alert['profit']:.2f}%\n"
             f"Bookmakers : {alert['bookmakers']}"
-       
+        )
+        
 def main():
     init_db()  # Initialise la DB SQLite avant de lancer le reste
     bot_thread = threading.Thread(target=bot_main)
