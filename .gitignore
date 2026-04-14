@@ -1,0 +1,6 @@
+# Ignorer les fichiers sensibles et les logs
+config.py
+*.db
+*.log
+__pycache__/
+.env
