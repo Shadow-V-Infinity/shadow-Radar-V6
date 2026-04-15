@@ -1,6 +1,7 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from core.sofa_api import fetch_sofa_matches, format_matches_list
 from core.analysis import build_auto_analysis
+from core.nba_history import nba_history_model
 
 
 async def show_nba_menu(query):
