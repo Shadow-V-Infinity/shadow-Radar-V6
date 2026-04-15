@@ -7,7 +7,7 @@ import sqlite3
 from telegram import Bot
 from config import TELEGRAM_BOT_TOKEN
 from api.tennis_api import fetch_tennis_matches
-from api.odds_api import fetch_odds
+from api.odds import fetch_odds
 from database import DB_PATH
 
 
@@ -31,11 +31,11 @@ def _get_subscribed_chat_ids(sport: str) -> list[int]:
 
 async def _send_alert(chat_id: int, message: str):
     """Envoie un message Telegram à un utilisateur."""
-    bot = Bot(token=TELEGRAM_BOT_TOKEN)
-    try:
-        await bot.send_message(chat_id=chat_id, text=message, parse_mode="Markdown")
-    except Exception as e:
-        print(f"❌ Erreur envoi alerte vers {chat_id} : {e}")
+    async with Bot(token=TELEGRAM_BOT_TOKEN) as bot:
+        try:
+            await bot.send_message(chat_id=chat_id, text=message, parse_mode="Markdown")
+        except Exception as e:
+            print(f"❌ Erreur envoi alerte vers {chat_id} : {e}")
 
 
 def send_alert_to_users(alert: dict, sport: str = "football"):
@@ -50,7 +50,7 @@ def _format_alert(alert: dict) -> str:
     """Formate le message selon le type d'alerte."""
     if alert.get("type") == "movement":
         return (
-            f"🚨 **Mouvement de cote détecté** 🚨\n\n"
+            f"🚨 *Mouvement de cote détecté* 🚨\n\n"
             f"Match : {alert['match']}\n"
             f"Bookmaker : {alert['bookmaker']}\n"
             f"Issue : {alert['outcome']}\n"
@@ -59,7 +59,7 @@ def _format_alert(alert: dict) -> str:
         )
     elif alert.get("type") == "surebet":
         return (
-            f"💰 **Surebet détecté** 💰\n\n"
+            f"💰 *Surebet détecté* 💰\n\n"
             f"Match : {alert['match']}\n"
             f"Profit garanti : {alert['profit']:.2f}%\n"
             f"Bookmakers : {alert['bookmakers']}"
