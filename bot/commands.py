@@ -9,7 +9,7 @@ from api.football_data import fetch_football_matches
 
 # Commande /start
 def start(update: Update, context: CallbackContext):
-    update.message.reply_text(
+    update.message.reply_text)
         "🎉 Bienvenue sur **Sports Alert Bot** !\n\n"
         "Utilise /help pour voir la liste des commandes disponibles."
 
