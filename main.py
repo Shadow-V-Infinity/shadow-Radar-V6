@@ -1,6 +1,6 @@
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 from telegram import Update
-
+from core.nba_history import nba_history_model
 from core.loader import start, show_main_menu
 from menus.tennis import show_tennis_menu, tennis_today, tennis_analysis, tennis_alerts
 from menus.foot import show_foot_menu, foot_today, foot_analysis, foot_alerts
@@ -113,6 +113,33 @@ def main():
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(menu_handler))
+
+  async def nba_team(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not context.args:
+        await update.message.reply_text("Usage : /nba_team <team>")
+        return
+    team = " ".join(context.args)
+    res = nba_history_model.get_team_summary(team)
+    if not res:
+        await update.message.reply_text("Équipe inconnue.")
+        return
+    await update.message.reply_text(res, parse_mode="Markdown")
+
+
+async def nba_matchup(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if len(context.args) < 2:
+        await update.message.reply_text("Usage : /nba_matchup <home> <away>")
+        return
+    home = context.args[0]
+    away = context.args[1]
+    res = nba_history_model.get_matchup_edge(home, away)
+    if not res:
+        await update.message.reply_text("Matchup introuvable.")
+        return
+    await update.message.reply_text(res, parse_mode="Markdown")
+    
+    app.add_handler(CommandHandler("nba_team", nba_team))
+    app.add_handler(CommandHandler("nba_matchup", nba_matchup))
 
     print("Bot lancé…")
     app.run_polling()
