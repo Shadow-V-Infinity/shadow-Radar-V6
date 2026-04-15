@@ -63,14 +63,16 @@ def format_alert(alert):
         )
         
 def main():
-    init_db()  # Initialise la DB SQLite avant de lancer le reste
-    bot_thread = threading.Thread(target=bot_main)
-    bot_thread.daemon = True
-    bot_thread.start()
-
-    # Lancer la surveillance football + tennis
-    threading.Thread(target=monitor_odds, daemon=True).start()  # Football
-    threading.Thread(target=monitor_tennis_alerts, daemon=True).start()  # Tennis
-   
+    init_db()  # Initialise la DB
+    # Lance le bot Telegram en arrière-plan
+    threading.Thread(target=bot_main, daemon=True).start()
+    
+    # Lance le scan Tennis en arrière-plan
+    threading.Thread(target=monitor_tennis_alerts, daemon=True).start()
+    
+    print("🚀 Radar V6 opérationnel. Scan Football en cours...")
+    # Lance le scan Football (boucle principale)
+    monitor_odds() 
+    
     if __name__ == "__main__":
         main()
