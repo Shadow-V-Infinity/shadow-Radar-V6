@@ -1,6 +1,7 @@
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 from telegram import Update
 from core.nba_history import nba_history_model
+from core.nba_predictor import nba_predictor
 from core.loader import start, show_main_menu
 from menus.tennis import show_tennis_menu, tennis_today, tennis_analysis, tennis_alerts
 from menus.foot import show_foot_menu, foot_today, foot_analysis, foot_alerts
@@ -140,6 +141,20 @@ async def nba_matchup(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     app.add_handler(CommandHandler("nba_team", nba_team))
     app.add_handler(CommandHandler("nba_matchup", nba_matchup))
+
+   async def nba_predict(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if len(context.args) < 2:
+        await update.message.reply_text("Usage : /nba_predict <home> <away>")
+        return
+
+    home = context.args[0]
+    away = context.args[1]
+
+    result = nba_predictor.predict(home, away)
+    await update.message.reply_text(result, parse_mode="Markdown")
+    
+    app.add_handler(CommandHandler("nba_predict", nba_predict))
+       
 
     print("Bot lancé…")
     app.run_polling()
