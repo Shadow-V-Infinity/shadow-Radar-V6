@@ -33,7 +33,7 @@ async def _send_alert(chat_id: int, message: str):
     """Envoie un message Telegram à un utilisateur."""
     async with Bot(token=TELEGRAM_BOT_TOKEN) as bot:
         try:
-            await bot.send_message(chat_id=chat_id, text=message, parse_mode="Markdown")
+            bot.send_message(chat_id=chat_id, text=message, parse_mode="Markdown")
         except Exception as e:
             print(f"❌ Erreur envoi alerte vers {chat_id} : {e}")
 

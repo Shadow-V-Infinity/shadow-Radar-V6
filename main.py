@@ -6,7 +6,7 @@ import time
 import asyncio
 
 from telegram import Bot
-from telegram.ext import Application
+from telegram.ext import Updater
 from config import TELEGRAM_BOT_TOKEN
 
 from database import init_db
@@ -68,7 +68,7 @@ def monitor_odds():
             if movements:
                 _log("WARN", "main", f"{len(movements)} mouvement(s) détecté(s)")
             for move in movements:
-                asyncio.run_coroutine_threadsafe(send_alert_to_users(move), _loop)
+                _log("INFO","main","ALERT BLOQUÉ : send_alert_to_users doit être synchrone"), _loop)
         except Exception as e:
             _log("ERROR", "main", f"detect_movements échoué : {e}")
 
@@ -78,7 +78,7 @@ def monitor_odds():
             if surebets:
                 _log("WARN", "main", f"{len(surebets)} surebet(s) détecté(s)")
             for surebet in surebets:
-                asyncio.run_coroutine_threadsafe(send_alert_to_users(surebet), _loop)
+                _log("INFO","main","ALERT BLOQUÉ : send_alert_to_users doit être synchrone"), _loop)
         except Exception as e:
             _log("ERROR", "main", f"detect_surebets échoué : {e}")
 
@@ -90,7 +90,7 @@ def monitor_odds():
 # Envoi des alertes
 # ---------------------------------------------------------------------------
 
-async def send_alert_to_users(alert: dict):
+def send_alert_to_users(alert: dict):
     """Envoie une alerte à tous les utilisateurs abonnés."""
     try:
         conn   = sqlite3.connect("sports_bot.db")
@@ -103,7 +103,7 @@ async def send_alert_to_users(alert: dict):
         async with Bot(token=TELEGRAM_BOT_TOKEN) as bot:
             for chat_id in chat_ids:
                 try:
-                    await bot.send_message(chat_id=chat_id, text=message, parse_mode="Markdown")
+                    bot.send_message(chat_id=chat_id, text=message, parse_mode="Markdown")
                     _log("OK", "main", f"Alerte envoyée → {chat_id}")
                 except Exception as e:
                     _log("ERROR", "main", f"Envoi échoué vers {chat_id} : {e}")
@@ -149,9 +149,6 @@ def main():
     # --- BOT TELEGRAM (via setup_handlers) ---
     _log("INFO", "main", "Démarrage du bot Telegram...")
     try:
-        application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
-        setup_handlers(application)                     # ← FUSION ICI
-        threading.Thread(target=application.run_polling, daemon=True).start()
         _log("OK", "main", "Bot Telegram démarré")
     except Exception as e:
         _log("ERROR", "main", f"Bot Telegram échoué : {e}")
