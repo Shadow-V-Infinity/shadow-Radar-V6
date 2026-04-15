@@ -68,14 +68,9 @@ def main():
     bot_thread.daemon = True
     bot_thread.start()
 
-    
-    # Lancer la boucle de surveillance des cotes
-    monitor_odds() # Lance la boucle infinie de scan
-    
     # Lancer la surveillance football + tennis
     threading.Thread(target=monitor_odds, daemon=True).start()  # Football
     threading.Thread(target=monitor_tennis_alerts, daemon=True).start()  # Tennis
    
     if __name__ == "__main__":
-   
-    main()
+        main()
