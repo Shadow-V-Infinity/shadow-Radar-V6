@@ -197,7 +197,7 @@ def surebets(update: Update, context: CallbackContext):
 
 # Fonction principale pour lancer le bot
 def main():
-<<<<<<< HEAD
+
     updater = Updater(TELEGRAM_BOT_TOKEN)
     dp = updater.dispatcher
 
@@ -216,12 +216,11 @@ def main():
 
     updater.start_polling()
     updater.idle()
-=======
+
     application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
     application.run_polling()
->>>>>>> 7e7edbc (Ajout de l'analyse tennis et des alertes)
 
 if __name__ == "__main__":
     main()
