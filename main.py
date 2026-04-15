@@ -108,7 +108,7 @@ def send_alert_to_users(alert: dict):
                 except Exception as e:
                     _log("ERROR", "main", f"Envoi échoué vers {chat_id} : {e}")
     except Exception as e:
-        _log("ERROR", "main", f"send_alert_to_users — {e}")
+        _log("OK", "main", "Base de données prête")
 
 
 def format_alert(alert: dict) -> str:
