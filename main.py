@@ -6,9 +6,11 @@ import time
 import asyncio
 
 from telegram import Bot
+from telegram.ext import Application
 from config import TELEGRAM_BOT_TOKEN
+
 from database import init_db
-from bot.commands import main as bot_main
+from bot.commands import setup_handlers          # ← NOUVEAU : handlers centralisés
 from bot.alerts import detect_movements, detect_surebets, monitor_tennis_alerts
 from api.odds import fetch_odds, fetch_odds_io, save_odds
 
@@ -51,7 +53,7 @@ def monitor_odds():
         except Exception as e:
             _log("ERROR", "main", f"Football scan échoué : {e}")
 
-        # --- Tennis cotes ---
+        # --- Tennis ---
         try:
             _log("INFO", "main", "Scan Tennis (ATP)...")
             tennis_odds = fetch_odds_io("tennis", "ATP")
@@ -64,7 +66,7 @@ def monitor_odds():
         try:
             movements = detect_movements()
             if movements:
-                _log("WARN", "main", f"{len(movements)} mouvement(s) de cote détecté(s)")
+                _log("WARN", "main", f"{len(movements)} mouvement(s) détecté(s)")
             for move in movements:
                 asyncio.run_coroutine_threadsafe(send_alert_to_users(move), _loop)
         except Exception as e:
@@ -132,7 +134,7 @@ def format_alert(alert: dict) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Point d'entrée
+# Point d'entrée FUSIONNÉ
 # ---------------------------------------------------------------------------
 
 def main():
@@ -144,13 +146,17 @@ def main():
         _log("ERROR", "main", f"init_db échoué : {e}")
         return
 
+    # --- BOT TELEGRAM (via setup_handlers) ---
     _log("INFO", "main", "Démarrage du bot Telegram...")
     try:
-        threading.Thread(target=bot_main, daemon=True).start()
+        application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
+        setup_handlers(application)                     # ← FUSION ICI
+        threading.Thread(target=application.run_polling, daemon=True).start()
         _log("OK", "main", "Bot Telegram démarré")
     except Exception as e:
         _log("ERROR", "main", f"Bot Telegram échoué : {e}")
 
+    # --- ALERTES TENNIS ---
     _log("INFO", "main", "Démarrage surveillance tennis...")
     try:
         threading.Thread(target=monitor_tennis_alerts, daemon=True).start()
@@ -159,6 +165,8 @@ def main():
         _log("ERROR", "main", f"monitor_tennis_alerts échoué : {e}")
 
     _log("OK", "main", "🚀 Radar V6 opérationnel — scan toutes les 2 min\n")
+
+    # --- LANCEMENT DU RADAR ---
     monitor_odds()
 
 
