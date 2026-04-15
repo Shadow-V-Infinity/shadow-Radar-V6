@@ -68,7 +68,7 @@ def monitor_odds():
             if movements:
                 _log("WARN", "main", f"{len(movements)} mouvement(s) détecté(s)")
             for move in movements:
-                _log("INFO","main","ALERT BLOQUÉ : send_alert_to_users doit être synchrone"), _loop)
+                _log("INFO", "main", "ALERT BLOQUÉ : send_alert_to_users doit être synchrone")
         except Exception as e:
             _log("ERROR", "main", f"detect_movements échoué : {e}")
 
