@@ -12,9 +12,7 @@ def start(update: Update, context: CallbackContext):
     update.message.reply_text)
         "🎉 Bienvenue sur **Sports Alert Bot** !\n\n"
         "Utilise /help pour voir la liste des commandes disponibles."
-
-from config import TELEGRAM_BOT_TOKEN
-from telegram.ext import Application, CommandHandler, CallbackContext
+   )
 
 async def start(update, context: CallbackContext):
     await update.message.reply_text("🎉 Bot démarré !")
