@@ -32,10 +32,19 @@ async def nba_today(query):
 
 
 async def nba_analysis(query):
-    await query.edit_message_text(
-        build_auto_analysis("NBA"),
-        parse_mode="Markdown",
+    # Version simple : on affiche juste un texte générique + un rappel du modèle historique
+    text = (
+        "📈 **Analyse NBA — Mode Shadow‑Edge**\n"
+        "━━━━━━━━━━━━━━━━━━\n"
+        "Ce module utilise :\n"
+        "• Ton historique NBA (edge_calculated)\n"
+        "• Des stats moyennes par équipe\n"
+        "• Des edges moyens par matchup\n\n"
+        "Pour une analyse ciblée, envoie par exemple :\n"
+        "`/nba_matchup Lakers Suns`\n"
+        "`/nba_team Lakers`\n"
     )
+    await query.edit_message_text(text, parse_mode="Markdown")
 
 
 async def nba_alerts(query):
