@@ -1,24 +1,25 @@
-import asyncio
+import asyncio  # Corrigé : minuscule
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 
-
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # Message de départ
     msg = await update.message.reply_text("🤖 Initialisation du noyau IA…")
 
+    # Utilisation de triples guillemets pour éviter le SyntaxError sur les sauts de ligne
     frames = [
-        "🤖 Initialisation du noyau IA…
+        """🤖 Initialisation du noyau IA…
 
-🔹 Boot du système quantique",
-        "🤖 Initialisation du noyau IA…
+🔹 Boot du système quantique""",
+        """🤖 Initialisation du noyau IA…
 
 🔹 Boot du système quantique
-🔹 Calibration neuronale",
-        "🤖 Initialisation du noyau IA…
+🔹 Calibration neuronale""",
+        """🤖 Initialisation du noyau IA…
 
 🔹 Boot du système quantique
 🔹 Calibration neuronale
-🔹 Synchronisation des modules",
+🔹 Synchronisation des modules""",
     ]
 
     for frame in frames:
@@ -29,21 +30,16 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("🚀 Entrer dans le Système", callback_data="open_menu")]
     ]
 
+    # Style Shadow Radar V6 (Gaël)
     await msg.edit_text(
-        "🌑 **SHΛDOW RΛDΛR V6 — IA ONLINE**
-"
-        "━━━━━━━━━━━━━━━━━━
-"
-        "Modules synchronisés.
-"
-        "Bienvenue Gaël.
-
-"
+        "🌑 **SHΛDOW RΛDΛR V6 — IA ONLINE**\n"
+        "━━━━━━━━━━━━━━━━━━\n"
+        "Modules synchronisés.\n"
+        "Bienvenue Gaël.\n\n"
         "Prêt pour l’analyse prédictive ? 🔥",
         reply_markup=InlineKeyboardMarkup(keyboard),
         parse_mode="Markdown",
     )
-
 
 async def show_main_menu(query):
     keyboard = [
@@ -59,10 +55,8 @@ async def show_main_menu(query):
     ]
 
     await query.edit_message_text(
-        "📟 **SHΛDOW MENU — MODE PREMIUM**
-"
-        "━━━━━━━━━━━━━━━━━━
-"
+        "📟 **SHΛDOW MENU — MODE PREMIUM**\n"
+        "━━━━━━━━━━━━━━━━━━\n"
         "Sélectionne ton module :",
         reply_markup=InlineKeyboardMarkup(keyboard),
         parse_mode="Markdown",
