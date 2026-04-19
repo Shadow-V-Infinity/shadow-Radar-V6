@@ -91,7 +91,7 @@ async def menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif data == "menu_stats":
         await query.edit_message_text(
-            "📊 **STATISTIQUES GLOBALES — MODULE PREMIUM**
+            """📊 **STATISTIQUES GLOBALES — MODULE PREMIUM**
 "
             "━━━━━━━━━━━━━━━━━━
 "
