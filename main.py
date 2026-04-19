@@ -6,7 +6,17 @@ from core.nba_history import nba_history_model
 from core.nba_predictor import nba_predictor
 from core.loader import start, show_main_menu
 
-from menus.tennis import show_tennis_menu, tennis_today, tennis_analysis, tennis_alerts
+from menus.tennis import (
+    show_tennis_menu,
+    tennis_today,
+    tennis_analysis,
+    tennis_alerts,
+    tennis_value_bets,
+    tennis_h2h_menu,
+    tennis_h2h,
+    tennis_proba_menu,
+    tennis_proba,
+)
 from menus.foot import show_foot_menu, foot_today, foot_analysis, foot_alerts
 from menus.basket import show_basket_menu, basket_today, basket_analysis, basket_alerts
 from menus.nba import show_nba_menu, nba_today, nba_analysis, nba_alerts
@@ -26,6 +36,7 @@ async def menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if data == "open_menu":
         await show_main_menu(query)
 
+    # ── TENNIS ────────────────────────────────────────────────────────────────
     elif data == "menu_tennis":
         await show_tennis_menu(query)
     elif data == "tennis_today":
@@ -34,7 +45,20 @@ async def menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await tennis_analysis(query)
     elif data == "tennis_alerts":
         await tennis_alerts(query)
+    elif data == "tennis_value_bets":
+        await tennis_value_bets(query)
+    elif data == "tennis_h2h_menu":
+        await tennis_h2h_menu(query)
+    elif data.startswith("tennis_h2h_"):
+        event_id = int(data.replace("tennis_h2h_", ""))
+        await tennis_h2h(query, event_id)
+    elif data == "tennis_proba_menu":
+        await tennis_proba_menu(query)
+    elif data.startswith("tennis_proba_"):
+        event_id = int(data.replace("tennis_proba_", ""))
+        await tennis_proba(query, event_id)
 
+    # ── FOOT ──────────────────────────────────────────────────────────────────
     elif data == "menu_foot":
         await show_foot_menu(query)
     elif data == "foot_today":
@@ -44,6 +68,7 @@ async def menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data == "foot_alerts":
         await foot_alerts(query)
 
+    # ── BASKET ────────────────────────────────────────────────────────────────
     elif data == "menu_basket":
         await show_basket_menu(query)
     elif data == "basket_today":
@@ -53,6 +78,7 @@ async def menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data == "basket_alerts":
         await basket_alerts(query)
 
+    # ── NBA ───────────────────────────────────────────────────────────────────
     elif data == "menu_nba":
         await show_nba_menu(query)
     elif data == "nba_today":
@@ -62,6 +88,7 @@ async def menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data == "nba_alerts":
         await nba_alerts(query)
 
+    # ── HANDBALL ──────────────────────────────────────────────────────────────
     elif data == "menu_handball":
         await show_handball_menu(query)
     elif data == "handball_today":
@@ -71,6 +98,7 @@ async def menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data == "handball_alerts":
         await handball_alerts(query)
 
+    # ── RUGBY ─────────────────────────────────────────────────────────────────
     elif data == "menu_rugby":
         await show_rugby_menu(query)
     elif data == "rugby_today":
@@ -80,6 +108,7 @@ async def menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data == "rugby_alerts":
         await rugby_alerts(query)
 
+    # ── HOCKEY ────────────────────────────────────────────────────────────────
     elif data == "menu_hockey":
         await show_hockey_menu(query)
     elif data == "hockey_today":
@@ -89,13 +118,12 @@ async def menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data == "hockey_alerts":
         await hockey_alerts(query)
 
+    # ── STATS ─────────────────────────────────────────────────────────────────
     elif data == "menu_stats":
         await query.edit_message_text(
-            """📊 **STATISTIQUES GLOBALES — MODULE PREMIUM**
-"
-            "━━━━━━━━━━━━━━━━━━
-"
-            "Module en préparation ⚙️""",
+            "📊 **STATISTIQUES GLOBALES — MODULE PREMIUM**\n"
+            "━━━━━━━━━━━━━━━━━━\n"
+            "Module en préparation ⚙️",
             parse_mode="Markdown",
         )
 
@@ -105,6 +133,8 @@ async def menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data == "menu_close":
         await query.edit_message_text("❌ **Menu fermé.**")
 
+
+# ─── COMMANDES NBA ────────────────────────────────────────────────────────────
 
 async def nba_team(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not context.args:
@@ -148,6 +178,8 @@ async def nba_predict(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(result, parse_mode="Markdown")
 
+
+# ─── MAIN ─────────────────────────────────────────────────────────────────────
 
 def main():
     if not TELEGRAM_BOT_TOKEN:
