@@ -95,7 +95,7 @@ async def menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 "
             "━━━━━━━━━━━━━━━━━━
 "
-            "Module en préparation ⚙️",
+            "Module en préparation ⚙️""",
             parse_mode="Markdown",
         )
 
