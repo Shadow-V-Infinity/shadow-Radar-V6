@@ -7,11 +7,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = await update.message.reply_text("🤖 Initialisation du noyau IA…")
 
     frames = [
-        "🤖 Initialisation du noyau IA…\n\n🔹 Boot du système quantique",
-        "🤖 Initialisation du noyau IA…\n\n🔹 Boot du système quantique\n🔹 Calibration neuronale",
-        "🤖 Initialisation du noyau IA…\n\n🔹 Boot du système quantique\n🔹 Calibration neuronale\n🔹 Synchronisation des modules",
-        "🤖 Initialisation du noyau IA…\n\n🔹 Boot du système quantique\n🔹 Calibration neuronale\n🔹 Synchronisation des modules\n🔹 Activation du radar cognitif",
-        "🤖 Initialisation du noyau IA…\n\n🔹 Boot du système quantique\n🔹 Calibration neuronale\n🔹 Synchronisation des modules\n🔹 Activation du radar cognitif\n🔹 Ouverture de l’interface holographique",
+        "🤖 Initialisation du noyau IA…
+
+🔹 Boot du système quantique",
+        "🤖 Initialisation du noyau IA…
+
+🔹 Boot du système quantique
+🔹 Calibration neuronale",
+        "🤖 Initialisation du noyau IA…
+
+🔹 Boot du système quantique
+🔹 Calibration neuronale
+🔹 Synchronisation des modules",
     ]
 
     for frame in frames:
@@ -23,11 +30,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ]
 
     await msg.edit_text(
-        "🌑 **SHΛDOW RΛDΛR V6 — IA ONLINE**\n"
-        "━━━━━━━━━━━━━━━━━━\n"
-        "Modules synchronisés.\n"
-        "Interface holographique opérationnelle.\n"
-        "Bienvenue Gaël.\n\n"
+        "🌑 **SHΛDOW RΛDΛR V6 — IA ONLINE**
+"
+        "━━━━━━━━━━━━━━━━━━
+"
+        "Modules synchronisés.
+"
+        "Bienvenue Gaël.
+
+"
         "Prêt pour l’analyse prédictive ? 🔥",
         reply_markup=InlineKeyboardMarkup(keyboard),
         parse_mode="Markdown",
@@ -44,14 +55,15 @@ async def show_main_menu(query):
         [InlineKeyboardButton("🏉 Rugby", callback_data="menu_rugby")],
         [InlineKeyboardButton("🏒 Hockey", callback_data="menu_hockey")],
         [InlineKeyboardButton("📊 Statistiques Globales", callback_data="menu_stats")],
-        [InlineKeyboardButton("⬅️ Retour à l’Accueil", callback_data="back_home")],
         [InlineKeyboardButton("❌ Fermer le Menu", callback_data="menu_close")],
     ]
 
     await query.edit_message_text(
-        "📟 **SHΛDOW MENU — MODE PREMIUM**\n"
-        "━━━━━━━━━━━━━━━━━━\n"
-        "Sélectionne ton module :\n",
+        "📟 **SHΛDOW MENU — MODE PREMIUM**
+"
+        "━━━━━━━━━━━━━━━━━━
+"
+        "Sélectionne ton module :",
         reply_markup=InlineKeyboardMarkup(keyboard),
         parse_mode="Markdown",
     )
